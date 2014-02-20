@@ -1,0 +1,70 @@
+/////////////////////////////////////////////////////////////////////////
+/// sfml-flow
+/// Copyright (C) 2014 Jérôme Béchu
+///
+/// This program is free software: you can redistribute it and/or modify
+/// it under the terms of the GNU General Public License as published by
+/// the Free Software Foundation, either version 3 of the License, or
+/// (at your option) any later version.
+///
+/// This program is distributed in the hope that it will be useful,
+/// but WITHOUT ANY WARRANTY; without even the implied warranty of
+/// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+/// GNU General Public License for more details.
+///
+/// You should have received a copy of the GNU General Public License
+/// along with this program.  If not, see <http://www.gnu.org/licenses/>.
+/////////////////////////////////////////////////////////////////////////
+
+#ifndef SFML_FLOW_BUTTON_H
+#define SFML_FLOW_BUTTON_H
+
+#include <string>
+#include <map>
+#include "widget.h"
+#include "node.h"
+
+namespace flow
+{
+
+class Button
+        : public Widget
+{
+public:
+    typedef boost::shared_ptr<Button> Ptr;
+    Button(const sf::Vector2f& size,
+           const std::string& name,
+           boost::function<void()> callback);
+
+    Button(const sf::Vector2f& size,
+           const std::string& name);
+
+    Button(const sf::Vector2f& size,
+           const std::string& name,
+           boost::function<void(const std::string&)> callback,
+           const std::string& value);
+
+    Button(const sf::Vector2f& size,
+           const std::string& name,
+           boost::function<void(Node*)> callback,
+           Node* node);
+
+    void setCallback(boost::function<void()> callback);
+    void setCallback(boost::function<void(const std::string &)> callback, const std::string &value);
+private:
+    void setup(const std::string &name);
+    void onMouseLeftPressed();
+    bool onMouseLeftReleased();
+    void onMouseOver();
+    void onMouseOut();
+    std::string value_;
+    Node* node_;
+    bool pushed_;
+    boost::function<void()> callback_;
+    boost::function<void(const std::string&)> callback2_;
+    boost::function<void(Node*)> callback3_;
+};
+
+}
+
+#endif // SFML_FLOW_BUTTON_H

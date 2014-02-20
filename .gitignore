@@ -1,3 +1,13 @@
+# Created by http://gitignore.io
+
+### Linux ###
+.*
+!.gitignore
+!.git*
+*~
+
+
+### C++ ###
 # Compiled Object files
 *.slo
 *.lo
@@ -11,3 +21,12 @@
 *.lai
 *.la
 *.a
+
+### CMake ###
+CMakeCache.txt
+CMakeFiles
+Makefile
+cmake_install.cmake
+install_manifest.txt
+CMakeFiles.txt.user
+
