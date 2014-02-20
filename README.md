@@ -3,8 +3,11 @@ SFML-FLOW [![Build Status](https://travis-ci.org/bechu/sfml-flow.png?branch=mast
 
 Flow editor, based on model definition.
 
-Current status = Beta
----------------------
+Current status = Beta !
+
+Required :
+ - SFML 2.1
+ - Boost (system, filesystem, bind, functors)
 
 ![](images/screenshot.png?raw=true)
 
@@ -69,7 +72,7 @@ public:
 };
 ```
 
-In this case juste create a controller with this class :
+In this case just create a controller with this new class :
 
 ```c++
 Controller ctrl = Controller::make<XmlOutput>();
