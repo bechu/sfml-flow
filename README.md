@@ -1,4 +1,4 @@
-SFML-FLOW [![Build Status](https://travis-ci.org/bechu/sfml-flow.png?branch=master)](https://travis-ci.org/bechu/sfml-flow)
+SFML-FLOW
 =========
 
 Flow editor, based on model definition.
@@ -9,9 +9,11 @@ Required :
  - SFML 2.1
  - Boost (system, filesystem, bind, functors)
 
+## Screenshot
+
 ![](images/screenshot.png?raw=true)
 
-## Sample code
+## Corresponding sample code
 
 ```c++
 #include "include/flow/controller.h"
