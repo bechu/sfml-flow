@@ -3,6 +3,9 @@ SFML-FLOW [![Build Status](https://travis-ci.org/bechu/sfml-flow.png?branch=mast
 
 Flow editor, based on model definition.
 
+Current status = Beta
+---------------------
+
 ![](images/screenshot.png?raw=true)
 
 ## Sample code
@@ -41,5 +44,34 @@ int main()
     // launch interface & that's it !
     return ctrl.run();
 }
-
 ```
+
+## Specialize the input/output
+
+Of course is possible to define how to export and load data :
+
+```c++
+class XmlOutput
+        : public flow::IO
+{
+public:
+    void save(const std::string& filename,
+              const flow::Flow& flow) const
+    {
+      // save the flow structure to xml file ...
+    }
+    flow::Flow load(const std::string& filename) const
+    {
+        flow::Flow flow;
+        // load xml data and fill the flow structure ...
+        return flow;
+    }
+};
+```
+
+In this case juste create a controller with this class :
+
+```c++
+Controller ctrl = Controller::make<XmlOutput>();
+```
+
