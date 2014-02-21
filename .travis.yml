@@ -7,7 +7,7 @@ before_script:
   - sudo apt-get install libjpeg8-dev libgpgme11-dev libsndfile1-dev libopenal-dev
   - sudo apt-get install libjpeg62-dev
   - sudo apt-get install libzip-dev
-  - sudo apt-get install libboost-dev
+  - sudo apt-get install libboost-all-dev
   - wget http://www.sfml-dev.org/download/sfml/2.1/SFML-2.1-linux-gcc-64bits.tar.bz2
   - tar xf SFML-2.1-linux-gcc-64bits.tar.bz2
   - sudo cp -r SFML-2.1/lib/* /usr/local/lib/.
