@@ -29,7 +29,7 @@ int main()
     // define the font used for the UI
     Controller::setFont("font.ttf");
     // define where the editor load/save files
-    Controller::setWorkingDirectory("tmp/");
+    Controller::setWorkingDirectory("./");
 
     // create a first model : random
     Model& random = ctrl.add("random");
@@ -49,44 +49,3 @@ int main()
     // launch interface & that's it !
     return ctrl.run();
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-class XmlOutput
-        : public flow::IO
-{
-public:
-    void save(const std::string& filename,
-              const flow::Flow& flow) const
-    {
-    }
-    flow::Flow load(const std::string& filename) const
-    {
-        flow::Flow flow;
-        return flow;
-    }
-};

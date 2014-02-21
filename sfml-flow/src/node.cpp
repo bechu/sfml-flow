@@ -54,10 +54,17 @@ Node::Node(
     }
     max = std::max(max, model_name.size());
 
-    sf::Text t;
-    t.setFont(getFont());
-    int label_max_size = t.getCharacterSize();
-    label_max_size = t.getCharacterSize() * max;
+   // sf::Text t;
+   // t.setFont(getFont());
+   // t.setCharacterSize(Widget::kFontSize);
+   // std::string str;
+   // str.resize(max);
+   // std::fill(str.begin(), str.end(), '#');
+   // std::cout<<str<<std::endl;
+   // t.setString(str);
+    //int label_max_size = t.getLocalBounds().width;
+    //label_max_size = t.getCharacterSize() * max;
+    int label_max_size = Widget::kFontSize * 2 * max;
 
     int size_y = model.inputs_.size() + model.outputs_.size() + model.parameters_.size();
     size_y = 20 * size_y + 30;
@@ -79,11 +86,8 @@ Node::Node(
     label->setFont(getFont());
     label->setColor(sf::Color::White);
     label->setString(model_name);
-    label->setCharacterSize(12);
+    label->setCharacterSize(Widget::kFontSize);
     label->setPosition(sf::Vector2f(-label->getLocalBounds().width/2, -size_.y/2));
-                                    //+label->getLocalBounds().height*.7-size_.y/2));
-    //label->setPosition(sf::Vector2f(-label->getLocalBounds().width/2,
-    //                                +label->getLocalBounds().height*.7-size_.y/2));
 
     addDrawer("label", label);
 
@@ -124,7 +128,7 @@ Node::Node(
                                            "X",
                                            remove_node,
                                            this));
-    b->setPosition(sf::Vector2f(size_.x*.5-20, -size_.y*.5+ 10));
+    b->setPosition(sf::Vector2f(size_.x*.5, -size_.y*.5));
 }
 
 Anchor::Ptr Node::getAnchor(Flow::Type type, const std::string& name)

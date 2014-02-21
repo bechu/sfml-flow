@@ -43,8 +43,8 @@ void Toolgrid::add(const std::string& label,
     if(copy.size() != label.size())
         copy.insert(copy.begin()+copy.size()/2, '*');
     Button::Ptr b = addChild<Button>(
-                boost::make_shared<Button>(sf::Vector2f(100, 15), copy, callback, label));
-    b->setPosition(sf::Vector2f(60+offset_x_*110, 30 + offset_y_*40));
+                boost::make_shared<Button>(sf::Vector2f(kButtonSize, 20), copy, callback, label));
+    b->setPosition(sf::Vector2f(100+offset_x_*kXOffsetSize, 30 + offset_y_*kYOffsetSize));
     offset_x_++;
     if(offset_x_ >= column_)
     {

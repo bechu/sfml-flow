@@ -31,9 +31,9 @@ Widget::Ptr Toolbar::add(const std::string& label,
                     boost::function<void()> callback)
 {
     Button::Ptr b = addChild<Button>(
-                boost::make_shared<Button>(sf::Vector2f(80, 15), label, callback));
+                boost::make_shared<Button>(sf::Vector2f(kButtonSize, 15), label, callback));
     b->setPosition(sf::Vector2f(offset_, 0));
-    offset_+=100;
+    offset_+=kOffsetSize;
     return b;
 }
 

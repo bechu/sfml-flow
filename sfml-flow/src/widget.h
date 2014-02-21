@@ -64,6 +64,7 @@ public:
     static void setWorkingDirectory(const std::string& path);
 
 protected:
+    const static int kFontSize = 15;
     Widget(const sf::Vector2f& size=sf::Vector2f());
     virtual ~Widget();
 

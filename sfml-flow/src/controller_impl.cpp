@@ -207,7 +207,7 @@ int ControllerImpl::run()
 
     grid_ = addChild<Toolgrid>(boost::make_shared<Toolgrid>(sf::Vector2f(window.getSize().x, window.getSize().y)));
     grid_->hide();
-    grid_->setColumn(7);
+    grid_->setColumn(6);
     //grid_->setPosition(sf::Vector2f(-window.getSize().x/2, 0));//window.getSize().y/2));
     grid_->setPosition(sf::Vector2f(0, 0));//window.getSize().y/2));
 

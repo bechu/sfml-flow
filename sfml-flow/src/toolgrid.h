@@ -36,7 +36,10 @@ public:
     void setColumn(u_int32_t column);
     void clear();
 private:
-    const static int kMaxCharacters = 15;
+    const static int kXOffsetSize = 170;
+    const static int kYOffsetSize = 40;
+    const static int kButtonSize = 160;
+    const static int kMaxCharacters = 20;
     float offset_x_;
     float offset_y_;
     u_int32_t column_;

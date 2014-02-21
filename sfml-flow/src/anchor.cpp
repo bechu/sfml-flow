@@ -57,7 +57,7 @@ Anchor::Anchor(Flow::Type type,
     label->setFont(getFont());
     label->setColor(sf::Color::White);
     label->setString(name);
-    label->setCharacterSize(12);
+    label->setCharacterSize(Widget::kFontSize);
     addDrawer("label", label);
 
     if(type == Flow::kOutput)

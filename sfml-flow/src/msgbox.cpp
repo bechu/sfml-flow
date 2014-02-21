@@ -34,19 +34,19 @@ MsgBox::MsgBox(const sf::Vector2f &size)
     label->setFont(getFont());
     label->setColor(sf::Color::Red);
     label->setCharacterSize(20);
-    label->setPosition(sf::Vector2f(-200,
-                                    -label->getLocalBounds().height*.7-100));
     addDrawer("label", label);
 
     Button::Ptr ok = addChild<Button>(boost::make_shared<Button>(sf::Vector2f(100, 30),
                                           "OK",
                                           boost::bind(&Widget::hide, this)));
-    ok->setPosition(sf::Vector2f(-100, 0));
+    ok->setPosition(sf::Vector2f(0, 100));
 }
 
 void MsgBox::setValue(const std::string& value)
 {
     render<sf::Text>("label").setString(value);
+    render<sf::Text>("label").setPosition(sf::Vector2f(-render<sf::Text>("label").getLocalBounds().width/2,
+                                                       -render<sf::Text>("label").getLocalBounds().height*.7));
 }
 
 }

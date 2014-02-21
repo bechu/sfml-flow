@@ -33,6 +33,8 @@ public:
     Widget::Ptr add(const std::string& label,
                     boost::function<void()> callback);
 private:
+    const static int kOffsetSize = 150;
+    const static int kButtonSize = 100;
     float offset_;
 };
 

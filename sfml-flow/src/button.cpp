@@ -118,9 +118,10 @@ void Button::setup(const std::string& name)
     label->setFont(getFont());
     label->setColor(sf::Color::Black);
     label->setString(name);
-    label->setCharacterSize(12);
+    label->setCharacterSize(Widget::kFontSize);
     label->setPosition(sf::Vector2f(-label->getLocalBounds().width/2,
                                     -label->getLocalBounds().height*.7));
+
     addDrawer("label", label);
 
     onMouseOut();
