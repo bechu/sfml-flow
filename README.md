@@ -1,6 +1,8 @@
 SFML-FLOW
 =========
 
+[![Build Status](https://travis-ci.org/bechu/sfml-flow.png?branch=master)](https://travis-ci.org/bechu/sfml-flow)
+
 Flow editor, based on model definition.
 
 Current status = Beta !
