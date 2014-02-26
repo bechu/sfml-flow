@@ -3,7 +3,7 @@ SFML-FLOW
 
 [![Build Status](https://travis-ci.org/bechu/sfml-flow.png?branch=master)](https://travis-ci.org/bechu/sfml-flow)
 
-Flow editor, based on model definition.
+Flow editor, based on model definition. The aim is to specialize the serialisation of the flow.
 
 Current status = Beta !
 
@@ -14,6 +14,19 @@ Required :
 ## Screenshot
 
 ![](images/screenshot.png?raw=true)
+
+## The output file :
+
+```
+4
+Addition;383;211;
+print;659;241;
+random;198;164;max;3;min;0;
+random;233;287;max;3;min;0;
+out;1;2;A;0;0;
+out;1;3;B;0;0;
+Result;1;0;in;0;1;
+```
 
 ## Corresponding sample code
 
