@@ -25,8 +25,8 @@ Input::Input()
 {
     sf::Text* label = new sf::Text();
     label->setFont(getFont());
-    label->setColor(sf::Color::White);
-    label->setCharacterSize(12);
+    label->setColor(sf::Color(139, 150, 198));
+    label->setCharacterSize(kFontSize*2);
     label->setPosition(sf::Vector2f(-label->getLocalBounds().width/2,
                                     -label->getLocalBounds().height*.7));
     addDrawer("label", label);
@@ -34,6 +34,11 @@ Input::Input()
 
 bool Input::onText(sf::Uint32 unicode)
 {
+    if(unicode == 8 && sf::Keyboard::isKeyPressed(sf::Keyboard::LControl))
+    {
+        reset();
+        return true;
+    }
     if(unicode == 8
             || unicode == 13
             || unicode == 27) return false;
@@ -43,6 +48,8 @@ bool Input::onText(sf::Uint32 unicode)
     std::wstring ws = s.toWideString();
     input_.insert(input_.getSize(), unicode);
     render<sf::Text>("label").setString(input_);
+    render<sf::Text>("label").setPosition(sf::Vector2f(-render<sf::Text>("label").getLocalBounds().width/2,
+                                                       -render<sf::Text>("label").getLocalBounds().height*.7));
     return true;
 }
 
@@ -54,6 +61,8 @@ bool Input::onKey(sf::Keyboard::Key key)
         {
             input_.erase(input_.getSize() - 1);
             render<sf::Text>("label").setString(input_);
+            render<sf::Text>("label").setPosition(sf::Vector2f(-render<sf::Text>("label").getLocalBounds().width/2,
+                                                               -render<sf::Text>("label").getLocalBounds().height*.7));
         }
         return true;
     }
@@ -75,6 +84,8 @@ void Input::setText(const std::string& text)
 {
     input_ = text;
     render<sf::Text>("label").setString(input_);
+    render<sf::Text>("label").setPosition(sf::Vector2f(-render<sf::Text>("label").getLocalBounds().width/2,
+                                                       -render<sf::Text>("label").getLocalBounds().height*.7));
 }
 
 }

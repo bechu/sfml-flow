@@ -214,15 +214,15 @@ int ControllerImpl::run()
     Toolbar::Ptr toolbar = addChild<Toolbar>();
     toolbar->setPosition(sf::Vector2f(100, 30));
     toolbar->add("show models",
-                 boost::bind(&ControllerImpl::onShowModels, this));
+                 boost::bind(&ControllerImpl::onShowModels, this), 0);
     toolbar->add("clear",
-                 boost::bind(&ControllerImpl::onClear, this));
+                 boost::bind(&ControllerImpl::onClear, this), 8);
     toolbar->add("close",
-                 boost::bind(&ControllerImpl::onClose, this));
+                 boost::bind(&ControllerImpl::onClose, this), 17);
     toolbar->add("open",
-                 boost::bind(&ControllerImpl::onOpenFile, this));
+                 boost::bind(&ControllerImpl::onOpenFile, this), 15);
     toolbar->add("save",
-                 boost::bind(&ControllerImpl::onSaveFile, this));
+                 boost::bind(&ControllerImpl::onSaveFile, this), 19);
 
     flowImpl_ = addChild<FlowImpl>(boost::make_shared<FlowImpl>(models_));
 

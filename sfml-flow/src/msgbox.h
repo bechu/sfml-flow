@@ -34,6 +34,7 @@ public:
     typedef boost::shared_ptr<MsgBox> Ptr;
     MsgBox(const sf::Vector2f& size);
     void setValue(const std::string& value);
+    bool onKey(sf::Keyboard::Key key);
 };
 
 }

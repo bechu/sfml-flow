@@ -23,45 +23,54 @@ namespace flow
 
 Button::Button(const sf::Vector2f& size,
                const std::string& name,
-               boost::function<void()> callback)
+               boost::function<void()> callback,
+               Shape shape)
     : Widget(size)
     , callback_(callback)
     , pushed_(false)
     , node_(0)
 {
-    setup(name);
+    setup(name, shape);
 }
 
 Button::Button(const sf::Vector2f& size,
-               const std::string& name)
+               const std::string& name,
+               Shape shape)
     : Widget(size)
     , pushed_(false)
     , node_(0)
 {
-    setup(name);
+    setup(name, shape);
 }
 
 Button::Button(const sf::Vector2f& size,
                const std::string& name,
                boost::function<void(const std::string &)> callback,
-               const std::string& value)
+               const std::string& value,
+               Shape shape)
     : Widget(size)
     , value_(value)
     , callback2_(callback)
     , node_(0)
 {
-    setup(name);
+    setup(name, shape);
 }
 
 Button::Button(const sf::Vector2f& size,
                const std::string& name,
                boost::function<void(Node*)> callback,
-               Node* node)
+               Node* node,
+               Shape shape)
     : Widget(size)
     , callback3_(callback)
     , node_(node)
 {
-    setup(name);
+    setup(name, shape);
+}
+
+std::string Button::getLabel() const
+{
+    return name_;
 }
 
 void Button::onMouseOver()
@@ -83,16 +92,21 @@ bool Button::onMouseLeftReleased()
 {
     if(pushed_)
     {
-        if(value_.size() > 0)
-            callback2_(value_);
-        else if(node_)
-            callback3_(node_);
-        else
-            callback_();
+        call();
         return true;
     }
     pushed_ = false;
     return false;
+}
+
+void Button::call()
+{
+    if(value_.size() > 0)
+        callback2_(value_);
+    else if(node_)
+        callback3_(node_);
+    else
+        callback_();
 }
 
 void Button::setCallback(boost::function<void(const std::string&)> callback, const std::string& value)
@@ -104,15 +118,25 @@ void Button::setCallback(boost::function<void(const std::string&)> callback, con
 void Button::setCallback(boost::function<void()> callback)
 {
     value_.clear();
-    //node_.reset();
     callback_ = callback;
 }
 
-void Button::setup(const std::string& name)
+void Button::setup(const std::string& name, Shape shape)
 {
-    sf::RectangleShape* bg = new sf::RectangleShape(size_);
-    bg->setOrigin(sf::Vector2f(size_.x/2, size_.y/2));
-    addDrawer("bg", bg);
+    name_ = name;
+
+    if(shape == kRectangle)
+    {
+        sf::RectangleShape* bg = new sf::RectangleShape(size_);
+        bg->setOrigin(sf::Vector2f(size_.x/2, size_.y/2));
+        addDrawer("bg", bg);
+    }
+    else
+    {
+        sf::CircleShape* bg = new sf::CircleShape(size_.x);
+        bg->setOrigin(sf::Vector2f(size_.x, size_.x));
+        addDrawer("bg", bg);
+    }
 
     sf::Text* label = new sf::Text();
     label->setFont(getFont());

@@ -35,6 +35,7 @@ public:
                boost::function<void(const std::string&)> callback);
     void setColumn(u_int32_t column);
     void clear();
+    void filter(const std::string& word);
 private:
     const static int kXOffsetSize = 170;
     const static int kYOffsetSize = 40;

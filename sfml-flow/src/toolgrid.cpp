@@ -60,4 +60,16 @@ void Toolgrid::clear()
     Widget::clear();
 }
 
+void Toolgrid::filter(const std::string& word)
+{
+    for(Widget::List::iterator it=children_.begin();it!=children_.end();++it)
+    {
+        Button::Ptr b = Widget::as<Button>(*it);
+        if(b->getLabel().substr(0, word.size()) == word)
+            b->show();
+        else
+            b->hide();
+    }
+}
+
 }

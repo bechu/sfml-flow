@@ -36,23 +36,24 @@ InputDialog::InputDialog(const sf::Vector2f &size)
     sf::Text* label = new sf::Text();
     label->setFont(getFont());
     label->setColor(sf::Color::White);
-    label->setCharacterSize(20);
+    label->setCharacterSize(kFontSize);
     label->setPosition(sf::Vector2f(-label->getLocalBounds().width,
-                                    -label->getLocalBounds().height*.7-100));
+                                    -label->getLocalBounds().height*.7-300));
     addDrawer("label", label);
+
     input_ = addChild<Input>();
-    input_->setPosition(sf::Vector2f(-50, -50));
+    input_->setPosition(sf::Vector2f(0, 300));
 
     ok_ = addChild<Button>(boost::make_shared<Button>(sf::Vector2f(100, 30), "OK"));
-    ok_->setPosition(sf::Vector2f(-100, 0));
+    ok_->setPosition(sf::Vector2f(-100, 350));
     ok_->setCallback(boost::bind(&InputDialog::onOk, this));
+
     cancel_ = addChild<Button>(boost::make_shared<Button>(sf::Vector2f(100, 30), "Cancel"));
-    cancel_->setPosition(sf::Vector2f(100, 0));
+    cancel_->setPosition(sf::Vector2f(100, 350));
 
     grid_ = addChild<Toolgrid>(boost::make_shared<Toolgrid>(size));
     grid_->setPosition(sf::Vector2f(-size.x/2, -size.y/2));
     grid_->setColumn(7);
-    //grid_->add(name, add_node);
 }
 
 void InputDialog::onOk()
@@ -113,4 +114,27 @@ void InputDialog::setMode(bool open)
 {
     open_ = open;
 }
+
+bool InputDialog::onKey(sf::Keyboard::Key key)
+{
+    if(key == sf::Keyboard::Return)
+    {
+        onOk();
+        return true;
+    }
+    else if(key == sf::Keyboard::Escape)
+    {
+        hide();
+        return true;
+    }
+    return Widget::onKey(key);
+}
+
+bool InputDialog::onText(sf::Uint32 unicode)
+{
+    bool ret = Widget::onText(unicode);
+    grid_->filter(input_->getText());
+    return ret;
+}
+
 }

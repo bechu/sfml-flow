@@ -104,26 +104,6 @@ private:
     boost::function<void(Anchor*)> stop_;
 };
 
-inline std::string Anchor::getName() const
-{
-    return name_;
-}
-
-inline Node* Anchor::getParent() const
-{
-    return parent_;
-}
-
-inline void Anchor::setType(Flow::Type type)
-{
-    type_ = type;
-}
-
-inline Flow::Type Anchor::getType() const
-{
-    return type_;
-}
-
 }
 
 #endif // SFML_FLOW_ANCHOR_H

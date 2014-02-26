@@ -17,7 +17,6 @@
 /////////////////////////////////////////////////////////////////////////
 
 #include "toolbar.h"
-#include "button.h"
 
 namespace flow
 {
@@ -28,13 +27,29 @@ Toolbar::Toolbar()
 }
 
 Widget::Ptr Toolbar::add(const std::string& label,
-                    boost::function<void()> callback)
+                         boost::function<void()> callback,
+                         sf::Uint32 shortcut)
 {
     Button::Ptr b = addChild<Button>(
-                boost::make_shared<Button>(sf::Vector2f(kButtonSize, 15), label, callback));
+                boost::make_shared<Button>(sf::Vector2f(kButtonSize, 30), label, callback));
     b->setPosition(sf::Vector2f(offset_, 0));
     offset_+=kOffsetSize;
+    shortcuts_[shortcut] = b;
     return b;
+}
+
+bool Toolbar::onText(sf::Uint32 unicode)
+{
+    if(sf::Keyboard::isKeyPressed(sf::Keyboard::LControl))
+    {
+        if(shortcuts_.find(unicode) != shortcuts_.end())
+        {
+            shortcuts_[unicode]->call();
+            return true;
+        }
+        std::cout<<"ctrl+"<<unicode<<std::endl;
+    }
+    return Widget::onText(unicode);
 }
 
 }

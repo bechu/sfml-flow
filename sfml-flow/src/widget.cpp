@@ -285,4 +285,39 @@ bool Widget::contains(const sf::Vector2f& coord, const sf::Vector2f& pose)
     return boudingBox.contains(coord);
 }
 
+int Widget::getNextSlot()
+{
+    return sorted_counter_++;
+}
+
+void Widget::setMovable()
+{
+    movable_ = true;
+}
+
+void Widget::hide()
+{
+    visible_ = false;
+}
+
+void Widget::show()
+{
+    visible_ = true;
+}
+
+bool Widget::isVisible() const
+{
+    return visible_;
+}
+
+sf::Vector2f Widget::getSize() const
+{
+    return size_;
+}
+
+void Widget::addDepend(Widget::Ptr widget)
+{
+    depends_.push_back(widget);
+}
+
 }

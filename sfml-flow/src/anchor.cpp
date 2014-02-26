@@ -147,4 +147,24 @@ void Anchor::setValue(const std::string& value)
     }
 }
 
+std::string Anchor::getName() const
+{
+    return name_;
+}
+
+Node* Anchor::getParent() const
+{
+    return parent_;
+}
+
+void Anchor::setType(Flow::Type type)
+{
+    type_ = type;
+}
+
+Flow::Type Anchor::getType() const
+{
+    return type_;
+}
+
 }

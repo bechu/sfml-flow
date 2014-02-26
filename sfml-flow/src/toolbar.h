@@ -20,6 +20,7 @@
 #define SFML_FLOW_TOOLBAR_H
 
 #include "widget.h"
+#include "button.h"
 
 namespace flow
 {
@@ -31,11 +32,13 @@ public:
     typedef boost::shared_ptr<Toolbar> Ptr;
     Toolbar();
     Widget::Ptr add(const std::string& label,
-                    boost::function<void()> callback);
+                    boost::function<void()> callback, sf::Uint32 shortcut);
+    bool onText(sf::Uint32 unicode);
 private:
     const static int kOffsetSize = 150;
     const static int kButtonSize = 100;
     float offset_;
+    std::map<sf::Uint32, Button::Ptr> shortcuts_;
 };
 
 }

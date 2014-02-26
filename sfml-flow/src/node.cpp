@@ -36,7 +36,7 @@ Node::Node(
 {
     setMovable();
     // ok size depend of the numbers of inputs/outputs/parameters
-    size_t max = 20;
+    size_t max = model_name.size();
     for(Model::Data::Map::const_iterator it=model.inputs_.begin();
         it != model.inputs_.end(); ++it)
     {
@@ -54,21 +54,11 @@ Node::Node(
     }
     max = std::max(max, model_name.size());
 
-   // sf::Text t;
-   // t.setFont(getFont());
-   // t.setCharacterSize(Widget::kFontSize);
-   // std::string str;
-   // str.resize(max);
-   // std::fill(str.begin(), str.end(), '#');
-   // std::cout<<str<<std::endl;
-   // t.setString(str);
-    //int label_max_size = t.getLocalBounds().width;
-    //label_max_size = t.getCharacterSize() * max;
-    int label_max_size = Widget::kFontSize * 2 * max;
+    int label_max_size = 10 * max; // magic number :(
 
     int size_y = model.inputs_.size() + model.outputs_.size() + model.parameters_.size();
     size_y = 20 * size_y + 30;
-    size_ = sf::Vector2f(label_max_size/4, size_y);
+    size_ = sf::Vector2f(label_max_size, size_y);
 
     sf::RoundedRectangleShape*bg = new sf::RoundedRectangleShape(size_, M_PI*4, 100);
     bg->setFillColor(sf::Color(37, 37, 37));
@@ -127,7 +117,7 @@ Node::Node(
                 boost::make_shared<Button>(sf::Vector2f(10, 14),
                                            "X",
                                            remove_node,
-                                           this));
+                                           this, Button::kCircle));
     b->setPosition(sf::Vector2f(size_.x*.5, -size_.y*.5));
 }
 

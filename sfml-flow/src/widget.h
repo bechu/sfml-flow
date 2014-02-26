@@ -135,6 +135,8 @@ protected:
 
     static std::string path_;
     sf::Vector2f size_;
+protected:
+    Widget::List children_;
 private:
     virtual bool contains(const sf::Vector2f& coord, const sf::Vector2f &pose);
     virtual void update() {}
@@ -150,7 +152,6 @@ private:
     static sf::Font font_;
     sf::Vector2f start_pos_;
     bool moving_;
-    Widget::List children_;
     Widget::List depends_;
     std::set<Widget::Ptr> hide_;
     std::vector<Widget::List> sorted_;
@@ -214,41 +215,6 @@ inline int Widget::slot()
 {
     static const int slot = getNextSlot();
     return slot;
-}
-
-inline int Widget::getNextSlot()
-{
-    return sorted_counter_++;
-}
-
-inline void Widget::setMovable()
-{
-    movable_ = true;
-}
-
-inline void Widget::hide()
-{
-    visible_ = false;
-}
-
-inline void Widget::show()
-{
-    visible_ = true;
-}
-
-inline bool Widget::isVisible() const
-{
-    return visible_;
-}
-
-inline sf::Vector2f Widget::getSize() const
-{
-    return size_;
-}
-
-inline void Widget::addDepend(Widget::Ptr widget)
-{
-    depends_.push_back(widget);
 }
 
 template <typename T>

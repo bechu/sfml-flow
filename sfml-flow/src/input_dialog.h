@@ -43,6 +43,8 @@ public:
             boost::function<void(const std::string&)> load,
             boost::function<void(const std::string&)> save);
     void onOk();
+    bool onKey(sf::Keyboard::Key key);
+    bool onText(sf::Uint32 unicode);
 private:
     Input::Ptr input_;
     Toolgrid::Ptr grid_;

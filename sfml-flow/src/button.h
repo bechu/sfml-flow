@@ -31,33 +31,45 @@ class Button
         : public Widget
 {
 public:
+    typedef enum
+    {
+        kRectangle,
+        kCircle
+    } Shape;
     typedef boost::shared_ptr<Button> Ptr;
     Button(const sf::Vector2f& size,
            const std::string& name,
-           boost::function<void()> callback);
+           boost::function<void()> callback,
+           Shape shape = kRectangle);
 
     Button(const sf::Vector2f& size,
-           const std::string& name);
+           const std::string& name,
+           Shape shape = kRectangle);
 
     Button(const sf::Vector2f& size,
            const std::string& name,
            boost::function<void(const std::string&)> callback,
-           const std::string& value);
+           const std::string& value,
+           Shape shape = kRectangle);
 
     Button(const sf::Vector2f& size,
            const std::string& name,
            boost::function<void(Node*)> callback,
-           Node* node);
+           Node* node,
+           Shape shape = kRectangle);
 
     void setCallback(boost::function<void()> callback);
     void setCallback(boost::function<void(const std::string &)> callback, const std::string &value);
+    void call();
+    std::string getLabel() const;
 private:
-    void setup(const std::string &name);
+    void setup(const std::string &name, Shape shape);
     void onMouseLeftPressed();
     bool onMouseLeftReleased();
     void onMouseOver();
     void onMouseOut();
     std::string value_;
+    std::string name_;
     Node* node_;
     bool pushed_;
     boost::function<void()> callback_;

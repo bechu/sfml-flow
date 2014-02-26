@@ -49,4 +49,19 @@ void MsgBox::setValue(const std::string& value)
                                                        -render<sf::Text>("label").getLocalBounds().height*.7));
 }
 
+bool MsgBox::onKey(sf::Keyboard::Key key)
+{
+    if(key == sf::Keyboard::Return)
+    {
+        hide();
+        return true;
+    }
+    else if(key == sf::Keyboard::Escape)
+    {
+        hide();
+        return true;
+    }
+    return Widget::onKey(key);
+}
+
 }
