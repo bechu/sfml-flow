@@ -95,3 +95,7 @@ In this case just create a controller with this new class :
 Controller ctrl = Controller::make<XmlOutput>();
 ```
 
+
+
+[![Bitdeli Badge](https://d2weczhvl823v0.cloudfront.net/bechu/sfml-flow/trend.png)](https://bitdeli.com/free "Bitdeli Badge")
+
