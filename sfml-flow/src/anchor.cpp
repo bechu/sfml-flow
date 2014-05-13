@@ -80,11 +80,11 @@ void Anchor::update_data()
     {
         if(data_.is<int>())
             setValue<int>(data_.as<int>());
-        if(data_.is<float>())
+        else if(data_.is<float>())
             setValue<float>(data_.as<float>());
-        if(data_.is<double>())
+        else if(data_.is<double>())
             setValue<double>(data_.as<double>());
-        if(data_.is<std::string>())
+        else if(data_.is<std::string>())
             setValue<std::string>(data_.as<std::string>());
     }
 }
@@ -101,7 +101,7 @@ void Anchor::onMouseOver()
 
 void Anchor::onMouseOut()
 {
-    render<sf::Shape>("bg").setFillColor(sf::Color(237, 237, 47));
+    render<sf::Shape>("bg").setFillColor(color_);
     if(tip_ && type_ == Flow::kParam)
     {
         tip_->deactivate();
@@ -137,11 +137,11 @@ void Anchor::setValue(const std::string& value)
     {
         if(data_.is<int>())
             data_.as<int>() = to<int>(value);
-        if(data_.is<float>())
+        else if(data_.is<float>())
             data_.as<float>() = to<float>(value);
-        if(data_.is<double>())
+        else if(data_.is<double>())
             data_.as<double>() = to<double>(value);
-        if(data_.is<std::string>())
+        else if(data_.is<std::string>())
             data_.as<std::string>() = value;
         update_data();
     }
@@ -165,6 +165,23 @@ void Anchor::setType(Flow::Type type)
 Flow::Type Anchor::getType() const
 {
     return type_;
+}
+
+std::string Anchor::getValue() const
+{
+    return tip_->getValue();
+}
+
+void Anchor::connected()
+{
+    color_ = sf::Color(237, 237, 47);
+    render<sf::Shape>("bg").setFillColor(color_);
+}
+
+void Anchor::disconnected()
+{
+    color_ = sf::Color(30, 30, 30);
+    render<sf::Shape>("bg").setFillColor(color_);
 }
 
 }

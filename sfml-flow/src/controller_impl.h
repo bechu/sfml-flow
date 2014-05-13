@@ -44,7 +44,6 @@ public:
     ~ControllerImpl();
     bool onEvent(const sf::Event& event, const sf::View& view);
 
-    virtual void draw(sf::RenderTarget &target, sf::RenderStates states) const;
     void onShowModels();
 
     void onClear();
@@ -86,8 +85,7 @@ private:
         typedef boost::shared_ptr<EditConnector> Ptr;
         EditConnector()
         {
-            Curve* curve = new Curve();
-            addDrawer("curve", curve);
+            addDrawer("curve", new Curve());
             edit(false);
         }
         void init(const sf::Vector2f& from)

@@ -21,7 +21,7 @@ public:
         std::fstream file;
         file.open(filename.c_str(), std::ios_base::out);
         file << flow.models_size() << std::endl;
-        for(int i=0;i<flow.models_size();++i)
+        for(size_t i=0;i<flow.models_size();++i)
         {
             file << flow.getModelName(i) << ";";
             file << flow.getPosition(i).x << ";";
@@ -35,7 +35,7 @@ public:
             }
             file << std::endl;
         }
-        for(int i=0;i<flow.links_size();++i)
+        for(size_t i=0;i<flow.links_size();++i)
         {
             Flow::Link link = flow.getLink(i);
             file << link.from.name << ";";
@@ -99,7 +99,7 @@ public:
         int node = flow.add(tokens[0],
                 to<float>(tokens[1]),
                 to<float>(tokens[2]));
-        for(int i=3;i<tokens.size()-1;i+=2)
+        for(size_t i=3;i<tokens.size()-1;i+=2)
         {
             flow.set_param(node, tokens[i], tokens[i+1]);
         }

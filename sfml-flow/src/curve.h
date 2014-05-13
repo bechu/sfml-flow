@@ -25,7 +25,9 @@
 namespace flow
 {
 
-class Curve : public sf::Drawable, public sf::Transformable
+class Curve
+        : public sf::Drawable
+        , public sf::Transformable
 {
 public:
     Curve();
@@ -34,10 +36,7 @@ public:
     void clear();
     void set(size_t index, const sf::Vector2f& point);
     void setColor(const sf::Color& color);
-    size_t size()
-    {
-        return vertices_.getVertexCount();
-    }
+    size_t size();
     virtual bool contains(const sf::Vector2f& coord);
 private:
     sf::VertexArray vertices_;
@@ -45,6 +44,11 @@ private:
     unsigned int pwidth_;
     sf::Color color_;
 };
+
+inline size_t Curve::size()
+{
+    return vertices_.getVertexCount();
+}
 
 inline void Curve::set(size_t index, const sf::Vector2f& point)
 {

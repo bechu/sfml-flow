@@ -38,7 +38,7 @@ void Curve::clear()
 
 void Curve::setColor(const sf::Color& color)
 {
-    for(int i=0;i<vertices_.getVertexCount();++i)
+    for(size_t i=0;i<vertices_.getVertexCount();++i)
     {
         vertices_[i].color = color;
     }

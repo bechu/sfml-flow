@@ -24,15 +24,6 @@
 namespace flow
 {
 
-//struct delete_ptr
-//{
-//    template <typename T>
-//    void operator()(T* pPtr)
-//    {
-//        delete pPtr;
-//    }
-//};
-
 template <typename T>
 inline static T length(const sf::Vector2<T>& a)
 {

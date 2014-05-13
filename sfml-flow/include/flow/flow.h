@@ -67,12 +67,14 @@ public:
         params_.resize(models_name_.size());
         return models_name_.size()-1;
     }
-    void set_param(int node, const std::string& name, const std::string& value)
+    void set_param(size_t node, const std::string& name, const std::string& value)
     {
+        assert(node < params_.size());
         params_[node][name] = value;
     }
-    std::map<std::string, std::string> get_params(int node) const
+    std::map<std::string, std::string> get_params(size_t node) const
     {
+        assert(node < params_.size());
         return params_[node];
     }
     void add(const Link& link)
@@ -87,16 +89,19 @@ public:
     {
         return links_.size();
     }
-    std::string getModelName(int index) const
+    std::string getModelName(size_t index) const
     {
+        assert(index < models_name_.size());
         return models_name_[index];
     }
-    Position getPosition(int index) const
+    Position getPosition(size_t index) const
     {
+        assert(index < positions_.size());
         return positions_[index];
     }
-    Link getLink(int index) const
+    Link getLink(size_t index) const
     {
+        assert(index < links_.size());
         return links_[index];
     }
 private:

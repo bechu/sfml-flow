@@ -27,21 +27,16 @@
 namespace flow
 {
 
-/////////////////////////////////////////////////////////////
-/// \brief a node is compose of a model a name and a model type
-///         node have anchors
-/////////////////////////////////////////////////////////////
 class Node
         : public Widget
 {
 public:
     typedef boost::shared_ptr<Node> Ptr;
-    Node(
-           const Model& model,
-           const std::string& model_name,
-                            boost::function<void(Node*)> remove_node,
-                            boost::function<void(Anchor*)> start_anchor,
-                            boost::function<void(Anchor*)> stop_anchor);
+    Node(const Model& model,
+         const std::string& model_name,
+         boost::function<void(Node*)> remove_node,
+         boost::function<void(Anchor*)> start_anchor,
+         boost::function<void(Anchor*)> stop_anchor);
 
     std::string getModelName() const;
     const Model* getModel() const;

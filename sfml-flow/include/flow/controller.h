@@ -44,6 +44,10 @@ public:
     static void setFont(const std::string& file);
     static void setWorkingDirectory(const std::string& path);
     int run();
+    static Controller make()
+    {
+        return Controller(new BasicIO());
+    }
     template <typename T>
     static Controller make()
     {

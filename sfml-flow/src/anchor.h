@@ -57,16 +57,48 @@ public:
     bool onMouseLeftReleased();
     Node* getParent() const;
     std::string getName() const;
+
     template <typename T>
-    void setValue(T value)
+    void setValue(T value);
+
+    template <typename T>
+    T getValue() const;
+
+    template <typename T>
+    T to(const std::string& str) const;
+
+    std::string getValue() const;
+
+    void setValue(const std::string& value);
+
+    void connected();
+    void disconnected();
+private:
+    void update_data();
+    void onMouseOver();
+    void onMouseOut();
+    std::string name_;
+    Model::Data data_;
+    Flow::Type type_;
+    boost::function<void(Anchor*)> start_;
+    boost::function<void(Anchor*)> stop_;
+    Node* parent_;
+
+    Tooltip::Ptr tip_;
+    sf::Color color_;
+};
+
+    template <typename T>
+    void Anchor::setValue(T value)
     {
         if(!tip_) return ;
         std::stringstream ss;
         ss << value;
         tip_->setValue(ss.str());
     }
+
     template <typename T>
-    T getValue() const
+    T Anchor::getValue() const
     {
         if(!tip_) return T();
         std::stringstream ss(tip_->getValue());
@@ -76,33 +108,13 @@ public:
     }
 
     template <typename T>
-    T to(const std::string& str) const
+    T Anchor::to(const std::string& str) const
     {
         std::stringstream ss(str);
         T u;
         ss >> u;
         return u;
     }
-
-    std::string getValue() const
-    {
-        return tip_->getValue();
-    }
-
-    void setValue(const std::string& value);
-
-private:
-    void update_data();
-    void onMouseOver();
-    void onMouseOut();
-    Flow::Type type_;
-    std::string name_;
-    Model::Data data_;
-    Node* parent_;
-    Tooltip::Ptr tip_;
-    boost::function<void(Anchor*)> start_;
-    boost::function<void(Anchor*)> stop_;
-};
 
 }
 

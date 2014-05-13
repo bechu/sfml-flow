@@ -70,9 +70,9 @@ private:
     void onMouseOut();
     std::string value_;
     std::string name_;
-    Node* node_;
-    bool pushed_;
     boost::function<void()> callback_;
+    bool pushed_;
+    Node* node_;
     boost::function<void(const std::string&)> callback2_;
     boost::function<void(Node*)> callback3_;
 };

@@ -26,12 +26,12 @@ std::string  Widget::path_;
 int  Widget::sorted_counter_ = 0;
 
 Widget::Widget(const sf::Vector2f& size)
-    : over_(false)
+    : size_(size)
+    , over_(false)
     , moving_(false)
     , movable_(false)
-    //, layer(0)
-    , size_(size)
     , visible_(true)
+    , enable_(true)
 {
     sorted_.resize(100);
 }
@@ -50,28 +50,6 @@ void Widget::addDrawer(const std::string& name, sf::Drawable *d)
     draws_[name] = d;
 }
 
-//namespace
-//{
-//
-//bool myfunction (Widget::Ptr i,  Widget::Ptr j)
-//{
-//    if(i->layer > j->layer)
-//        return true;
-//    return false;
-//}
-//
-//}
-//
-//void  Widget::sort()
-//{
-//    std::sort (children_.begin(), children_.end(), myfunction);
-//    for(Widget::List::reverse_iterator it=children_.rbegin();it!=children_.rend();++it)
-//    {
-//        Widget::Ptr widget = *it;
-//        widget->sort();
-//    }
-//}
-
 void  Widget::draw(sf::RenderTarget &target, sf::RenderStates states) const
 {
     if(visible_ == false) return ;
@@ -81,21 +59,29 @@ void  Widget::draw(sf::RenderTarget &target, sf::RenderStates states) const
         const sf::Drawable* drawer = (*it).second;
         target.draw(*drawer, states);
     }
-    for(Widget::List::const_reverse_iterator it=children_.rbegin();it!=children_.rend();++it)
+    for(std::vector<Widget::List>::const_reverse_iterator sit=sorted_.rbegin();
+        sit != sorted_.rend(); ++sit)
     {
-        const  Widget::Ptr widget = *it;
-        if(std::find(hide_.begin(), hide_.end(), widget) == hide_.end())
-            target.draw(*widget, states);
+        for(Widget::List::const_iterator it=(*sit).begin();it!=(*sit).end();++it)
+        {
+            const  Widget::Ptr widget = *it;
+            if(std::find(hide_.begin(), hide_.end(), widget) == hide_.end())
+                target.draw(*widget, states);
+        }
     }
 }
 
 bool  Widget::onMouseMove(const sf::Vector2f& coord, const sf::Vector2f& position)
 {
     if(isVisible() == false) return false;
-    for(Widget::List::iterator it=children_.begin();it!=children_.end();++it)
+    for(std::vector<Widget::List>::iterator sit=sorted_.begin();
+        sit != sorted_.end(); ++sit)
     {
-        Widget::Ptr widget = *it;
-        if(widget->onMouseMove(coord, position+getPosition())) return true;
+        for(Widget::List::iterator it=(*sit).begin();it!=(*sit).end();++it)
+        {
+            Widget::Ptr widget = *it;
+            if(widget->onMouseMove(coord, position+getPosition())) return true;
+        }
     }
     if(moving_)
     {
@@ -122,25 +108,6 @@ bool  Widget::onMouseMove(const sf::Vector2f& coord, const sf::Vector2f& positio
     return false;
 }
 
-Widget::Ptr  Widget::addChild( Widget::Ptr widget)
-{
-    children_.push_back(widget);
-    //sort();
-    return widget;
-}
-
-void  Widget::removeChild(Widget* widget)
-{
-    for( Widget::List::iterator it=children_.begin();it!=children_.end();++it)
-    {
-        if((*it).get() == widget)
-        {
-            children_.erase(it);
-            return ;
-        }
-    }
-}
-
 void  Widget::removeDepend( Widget* widget)
 {
     for( Widget::List::iterator it=depends_.begin();it!=depends_.end();++it)
@@ -156,8 +123,11 @@ void  Widget::removeDepend( Widget* widget)
 bool  Widget::onMouseLeftPressed(const sf::Vector2f& coord, const sf::Vector2f &position)
 {
     if(isVisible() == false) return false;
-    for( Widget::List::iterator it=children_.begin();it!=children_.end();++it)
-        if((*it)->onMouseLeftPressed(coord, position+getPosition())) return true;
+
+    for(std::vector<Widget::List>::iterator sit=sorted_.begin();
+        sit != sorted_.end(); ++sit)
+        for( Widget::List::iterator it=(*sit).begin();it!=(*sit).end();++it)
+            if((*it)->onMouseLeftPressed(coord, position+getPosition())) return true;
     if(contains(coord, getPosition()+position))
     {
         if(movable_)
@@ -174,8 +144,10 @@ bool  Widget::onMouseLeftPressed(const sf::Vector2f& coord, const sf::Vector2f &
 void  Widget::onMouseRightPressed(const sf::Vector2f& coord, const sf::Vector2f& position)
 {
     if(isVisible() == false) return ;
-    for( Widget::List::iterator it=children_.begin();it!=children_.end();++it)
-        (*it)->onMouseLeftPressed(coord, position+getPosition());
+    for(std::vector<Widget::List>::iterator sit=sorted_.begin();
+        sit != sorted_.end(); ++sit)
+        for( Widget::List::iterator it=(*sit).begin();it!=(*sit).end();++it)
+            (*it)->onMouseLeftPressed(coord, position+getPosition());
     if(contains(coord, getPosition()+position)) onMouseRightPressed();
 }
 
@@ -183,11 +155,13 @@ bool  Widget::onMouseLeftReleased(const sf::Vector2f& coord, const sf::Vector2f&
 {
     if(isVisible() == false) return false;
     moving_ = false;
-    for( Widget::List::iterator it=children_.begin();it!=children_.end();++it)
-    {
-        if((*it)->onMouseLeftReleased(coord, position+getPosition()) == true)
-            return true;
-    }
+    for(std::vector<Widget::List>::iterator sit=sorted_.begin();
+        sit != sorted_.end(); ++sit)
+        for( Widget::List::iterator it=(*sit).begin();it!=(*sit).end();++it)
+        {
+            if((*it)->onMouseLeftReleased(coord, position+getPosition()) == true)
+                return true;
+        }
     if(isVisible() == false) return false;
     if(contains(coord, getPosition()+position))
     {
@@ -200,19 +174,23 @@ bool  Widget::onMouseLeftReleased(const sf::Vector2f& coord, const sf::Vector2f&
 void  Widget::onMouseRightReleased(const sf::Vector2f& coord, const sf::Vector2f& position)
 {
     if(isVisible() == false) return ;
-    for( Widget::List::iterator it=children_.begin();it!=children_.end();++it)
-        (*it)->onMouseRightReleased(coord, position+getPosition());
+    for(std::vector<Widget::List>::iterator sit=sorted_.begin();
+        sit != sorted_.end(); ++sit)
+        for( Widget::List::iterator it=(*sit).begin();it!=(*sit).end();++it)
+            (*it)->onMouseRightReleased(coord, position+getPosition());
     if(contains(coord, getPosition()+position)) onMouseRightReleased();
 }
 
 bool  Widget::onLeftDoubleClick(const sf::Vector2f& coord)
 {
     if(isVisible() == false) return false;
-    for( Widget::List::iterator it=children_.begin();it!=children_.end();++it)
-    {
-        Widget::Ptr widget = *it;
-        if(widget->onLeftDoubleClick(coord)) return true;
-    }
+    for(std::vector<Widget::List>::iterator sit=sorted_.begin();
+        sit != sorted_.end(); ++sit)
+        for( Widget::List::iterator it=(*sit).begin();it!=(*sit).end();++it)
+        {
+            Widget::Ptr widget = *it;
+            if(widget->onLeftDoubleClick(coord)) return true;
+        }
     if(contains(coord, getPosition()))
     {
         onLeftDoubleClick();
@@ -243,34 +221,43 @@ void  Widget::setWorkingDirectory(const std::string& path)
 }
 
 
-bool  Widget::onText(sf::Uint32 unicode)
+bool Widget::onText(sf::Uint32 unicode)
 {
     if(isVisible() == false) return false;
-    for(Widget::List::iterator it=children_.begin();it!=children_.end();++it)
+    for(std::vector<Widget::List>::iterator sit=sorted_.begin();
+        sit != sorted_.end(); ++sit)
     {
-        Widget::Ptr widget = *it;
-        if(widget->onText(unicode) == true)
-            return true;
+        for(Widget::List::iterator it=(*sit).begin();it!=(*sit).end();++it)
+        {
+            Widget::Ptr widget = *it;
+            if(widget->onText(unicode) == true)
+                return true;
+        }
     }
     return false;
 }
 
-bool  Widget::onKey(sf::Keyboard::Key key)
+bool Widget::onKey(sf::Keyboard::Key key)
 {
     if(isVisible() == false) return false;
-    for(Widget::List::iterator it=children_.begin();it!=children_.end();++it)
+
+    for(std::vector<Widget::List>::iterator sit=sorted_.begin();
+        sit != sorted_.end(); ++sit)
     {
-        Widget::Ptr widget = *it;
-        if(widget->isVisible() == true)
-            if(widget->onKey(key) == true)
-                return true;
+        for(Widget::List::iterator it=(*sit).begin();it!=(*sit).end();++it)
+        {
+            Widget::Ptr widget = *it;
+            if(widget->isVisible() == true)
+                if(widget->onKey(key) == true)
+                    return true;
+        }
     }
+
     return false;
 }
 
 void  Widget::clear()
 {
-    children_.clear();
     sorted_.clear();
     sorted_.resize(100);
 }
@@ -310,7 +297,7 @@ bool Widget::isVisible() const
     return visible_;
 }
 
-sf::Vector2f Widget::getSize() const
+const sf::Vector2f& Widget::getSize() const
 {
     return size_;
 }

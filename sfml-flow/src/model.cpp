@@ -52,7 +52,6 @@ void Model::parameter(Data::Type type, const std::string& name)
     if(parameters_.find(name) == parameters_.end())
     {
         parameters_[name] = Model::Data(type);
-        //parameters_[name].allocate<T>();
     }
 }
 

@@ -3,67 +3,64 @@ SFML-FLOW
 
 [![Build Status](https://travis-ci.org/bechu/sfml-flow.png?branch=master)](https://travis-ci.org/bechu/sfml-flow)
 
-Flow editor, based on model definition. The aim is to specialize the serialisation of the flow.
-
-Current status = Beta !
+Flow editor, based on model definition in c++.
+Possibility to overwrite the save/load functions.
 
 Required :
  - SFML 2.1
  - Boost (system, filesystem, bind, functors)
 
-## Screenshot
+## What it's look like :
 
-![](images/screenshot.png?raw=true)
-
-## The output file :
-
-```
-4
-Addition;383;211;
-print;659;241;
-random;198;164;max;3;min;0;
-random;233;287;max;3;min;0;
-out;1;2;A;0;0;
-out;1;3;B;0;0;
-Result;1;0;in;0;1;
-```
+[![Flow Demo](http://img.youtube.com/vi/-0VJ6-2Nrpw/0.jpg)](http://www.youtube.com/watch?v=-0VJ6-2Nrpw)
 
 ## Corresponding sample code
 
 ```c++
 #include "include/flow/controller.h"
 
+// fake class
+struct Image {};
+struct Position {};
+
 int main()
 {
     using namespace flow;
 
-    // I create a new controller with a class
-    // to serialize or unserialize the flow
-    Controller ctrl = Controller::make<BasicIO>();
-
-    // define the font used for the UI
+    // create a new controller with the basic input/output file management
+    Controller ctrl = Controller::make();
+    //  define the font
     Controller::setFont("font.ttf");
-    // define where the editor load/save files
-    Controller::setWorkingDirectory("tmp/");
+    // and where the controller load/save files
+    Controller::setWorkingDirectory("./tmp/");
 
-    // create a first model : random
-    Model& random = ctrl.add("random");
-    random.parameter<float>("min") = 0;
-    random.parameter<float>("max") = 3;
-    random.output<float>("out");
+    // Create some models ...
+    Model& open_image = ctrl.add("open_image");
+    open_image.parameter<std::string>("filename") = "?";
+    open_image.output<Image>("image");
 
-    // create a second model : print
-    Model& print = ctrl.add("print");
-    print.input<float>("in");
+    Model& bw = ctrl.add("black_and_white");
+    bw.input<Image>("input");
+    bw.output<Image>("done");
 
-    Model& addition = ctrl.add("Addition");
-    addition.input<float>("A");
-    addition.input<float>("B");
-    addition.output<float>("Result");
+    Model& ff = ctrl.add("Find_Face");
+    ff.parameter<std::string>("haar_cascade") = "default.xml";
+    ff.output<Position>("position");
+    ff.input<Image>("input");
 
-    // launch interface & that's it !
+    Model& dr = ctrl.add("Draw_Rectangle");
+    dr.input<Position>("position");
+    dr.parameter<std::string>("color");
+    dr.parameter<int>("thickness") = 2;
+
+    Model& di = ctrl.add("Draw_Image");
+    di.parameter<Image>("image");
+    //
+
+    // that's it
     return ctrl.run();
 }
+
 ```
 
 ## Specialize the input/output
@@ -94,8 +91,4 @@ In this case just create a controller with this new class :
 ```c++
 Controller ctrl = Controller::make<XmlOutput>();
 ```
-
-
-
-[![Bitdeli Badge](https://d2weczhvl823v0.cloudfront.net/bechu/sfml-flow/trend.png)](https://bitdeli.com/free "Bitdeli Badge")
 

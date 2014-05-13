@@ -50,8 +50,8 @@ Button::Button(const sf::Vector2f& size,
                Shape shape)
     : Widget(size)
     , value_(value)
-    , callback2_(callback)
     , node_(0)
+    , callback2_(callback)
 {
     setup(name, shape);
 }
@@ -62,8 +62,8 @@ Button::Button(const sf::Vector2f& size,
                Node* node,
                Shape shape)
     : Widget(size)
-    , callback3_(callback)
     , node_(node)
+    , callback3_(callback)
 {
     setup(name, shape);
 }
@@ -137,6 +137,8 @@ void Button::setup(const std::string& name, Shape shape)
         bg->setOrigin(sf::Vector2f(size_.x, size_.x));
         addDrawer("bg", bg);
     }
+    render<sf::Shape>("bg").setOutlineColor(sf::Color(8, 8, 8));
+    render<sf::Shape>("bg").setOutlineThickness(1);
 
     sf::Text* label = new sf::Text();
     label->setFont(getFont());

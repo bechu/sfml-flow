@@ -46,7 +46,7 @@ void Controller::setWorkingDirectory(const std::string& path)
 
 bool Controller::onEvent(const sf::Event& event, const sf::View& view)
 {
-    ctrl_->onEvent(event, view);
+    return ctrl_->onEvent(event, view);
 }
 
 void Controller::draw(sf::RenderTarget &target, sf::RenderStates states) const

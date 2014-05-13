@@ -60,12 +60,6 @@ sf::Vector2f mapPixelToCoords(const sf::Vector2i& point, const sf::View& view)
 }
 }
 
-void ControllerImpl::draw(sf::RenderTarget &target, sf::RenderStates states) const
-{
-    Widget::draw(target, states);
-    states.transform *= getTransform();
-}
-
 bool ControllerImpl::onEvent(const sf::Event& event, const sf::View& view)
 {
     if(initialized_ == false)
@@ -177,6 +171,7 @@ void ControllerImpl::onRemoveNode(Node *node)
 
 void ControllerImpl::onRemoveConnector(Connector* connector)
 {
+
     flowImpl_->removeConnector(connector);
 }
 
@@ -214,9 +209,9 @@ int ControllerImpl::run()
     Toolbar::Ptr toolbar = addChild<Toolbar>();
     toolbar->setPosition(sf::Vector2f(100, 30));
     toolbar->add("show models",
-                 boost::bind(&ControllerImpl::onShowModels, this), 0);
+                 boost::bind(&ControllerImpl::onShowModels, this), 9);
     toolbar->add("clear",
-                 boost::bind(&ControllerImpl::onClear, this), 8);
+                 boost::bind(&ControllerImpl::onClear, this), 14);
     toolbar->add("close",
                  boost::bind(&ControllerImpl::onClose, this), 17);
     toolbar->add("open",
@@ -234,15 +229,6 @@ int ControllerImpl::run()
             if(onEvent(event, window.getView()) == false) window.close();
             if(event.type == sf::Event::Closed)
                 window.close();
-           // else if (event.type == sf::Event::KeyPressed)
-           //     if (event.key.code == sf::Keyboard::Escape)
-           //         window.close();
-           // else if(event.type == sf::Event::Resized)
-           //     {
-           //         sf::View view = window.getView();
-           //         view.setSize(event.size.width, event.size.height);
-           //         window.setView(view);
-           //     }
         }
 
         window.clear(sf::Color(56, 56, 56));

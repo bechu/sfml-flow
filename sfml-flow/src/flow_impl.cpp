@@ -68,6 +68,8 @@ void FlowImpl::connect(Anchor* start, Anchor *end,
     Connector::Ptr connector = addChild<Connector>(boost::make_shared<Connector>(start, end, remove_connector));
     start->getParent()->addDepend(connector);
     end->getParent()->addDepend(connector);
+    start->connected();
+    end->connected();
 }
 
 void FlowImpl::removeNode(Node* node)
@@ -84,15 +86,29 @@ void FlowImpl::removeNode(Node* node)
     {
         removeConnector(Widget::as<Connector>((*it)).get());
     }
-    removeChild(node);
+    //removeChild(node);
     remove<Node>(node);
 }
 
 void FlowImpl::removeConnector(Connector* connector)
 {
+    Widget::List list = getList<Node>();
+    for(Widget::List::iterator it=list.begin();it!=list.end();++it)
+    {
+        Node::Ptr node = Widget::as<Node>(*it);
+        Widget::List list2 = node->getList<Anchor>();
+        for(Widget::List::iterator it2=list2.begin();it2!=list2.end();++it2)
+        {
+            Anchor::Ptr anchor = Widget::as<Anchor>(*it2);
+            if(anchor.get() == connector->from() || anchor.get() == connector->to())
+            {
+                anchor->disconnected();
+            }
+        }
+    }
     connector->from()->getParent()->removeDepend(connector);
     connector->to()->getParent()->removeDepend(connector);
-    removeChild(connector);
+    //removeChild(connector);
     remove<Connector>(connector);
 }
 
@@ -104,7 +120,7 @@ void FlowImpl::setFlow(const Flow& flow,
 {
     clear();
     std::vector<Node::Ptr> nodes;
-    for(int i=0;i<flow.models_size();++i)
+    for(size_t i=0;i<flow.models_size();++i)
     {
         nodes.push_back(addNode(flow.getModelName(i),
                                 sf::Vector2f(flow.getPosition(i).x, flow.getPosition(i).y),
@@ -119,7 +135,7 @@ void FlowImpl::setFlow(const Flow& flow,
             node->setParameter((*it).first, (*it).second);
         }
     }
-    for(int i=0;i<flow.links_size();++i)
+    for(size_t i=0;i<flow.links_size();++i)
     {
         Flow::Link link = flow.getLink(i);
         Node::Ptr from = nodes[link.from.index];

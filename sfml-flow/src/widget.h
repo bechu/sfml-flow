@@ -63,6 +63,10 @@ public:
 
     static void setWorkingDirectory(const std::string& path);
 
+    // SFML draw primitive
+    virtual void draw(sf::RenderTarget &target, sf::RenderStates states) const;
+    template <typename T>
+    List getList();
 protected:
     const static int kFontSize = 15;
     Widget(const sf::Vector2f& size=sf::Vector2f());
@@ -75,8 +79,6 @@ protected:
     template <typename T>
     boost::shared_ptr<T> addChild(Widget::Ptr widget);
 
-    template <typename T>
-    List getList();
 
     template <typename T>
     inline static boost::shared_ptr<T> as(Widget::Ptr w)
@@ -87,8 +89,6 @@ protected:
     template <typename T>
     void remove(T* inst);
 
-    void removeChild(Widget *widget);
-
     // basic 2d shape
     template <typename T>
     T& render(const std::string& name);
@@ -97,11 +97,8 @@ protected:
     // font
     sf::Font& getFont();
 
-    // SFML draw primitive
-    virtual void draw(sf::RenderTarget &target, sf::RenderStates states) const;
-
     // features
-    sf::Vector2f getSize() const;
+    const sf::Vector2f &getSize() const;
     void setFeatures(unsigned char features);
     void setMovable();
 
@@ -136,13 +133,11 @@ protected:
     static std::string path_;
     sf::Vector2f size_;
 protected:
-    Widget::List children_;
+    std::vector<Widget::List> sorted_;
 private:
     virtual bool contains(const sf::Vector2f& coord, const sf::Vector2f &pose);
     virtual void update() {}
     void update_depends();
-
-    Widget::Ptr addChild(Widget::Ptr widget);
 
     template <typename T>
     int slot();
@@ -151,15 +146,16 @@ private:
 
     static sf::Font font_;
     sf::Vector2f start_pos_;
+
+    bool over_;
     bool moving_;
+    bool movable_;
+    bool visible_;
+    bool enable_;
+
     Widget::List depends_;
     std::set<Widget::Ptr> hide_;
-    std::vector<Widget::List> sorted_;
-    bool enable_;
-    bool visible_;
-    bool movable_;
     static int sorted_counter_;
-    bool over_;
     std::map<std::string, sf::Drawable*> draws_;
 };
 
@@ -168,14 +164,13 @@ boost::shared_ptr<T> Widget::addChild(Widget::Ptr widget)
 {
     int s = slot<T>();
     sorted_[s].push_back(widget);
-    addChild(widget);
     return boost::static_pointer_cast<T>(widget);
 }
 
 template <typename T>
 void Widget::remove(T* inst)
 {
-    int s = slot<T>();
+    size_t s = slot<T>();
     if(s < sorted_.size())
     {
         for(Widget::List::iterator it=sorted_[s].begin();
@@ -196,15 +191,13 @@ boost::shared_ptr<T> Widget::addChild()
     int s = slot<T>();
     boost::shared_ptr<T> t = boost::make_shared<T>();
     sorted_[s].push_back(t);
-    children_.push_back(sorted_[s].back());
-    //sort();
     return t;
 }
 
 template <typename T>
 inline Widget::List Widget::getList()
 {
-    int s = slot<T>();
+    size_t s = slot<T>();
     if(s < sorted_.size())
         return sorted_[s];
     return Widget::List();
