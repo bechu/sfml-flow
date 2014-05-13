@@ -4,13 +4,15 @@ SFML-FLOW
 [![Build Status](https://travis-ci.org/bechu/sfml-flow.png?branch=master)](https://travis-ci.org/bechu/sfml-flow)
 
 Flow editor, based on model definition in c++.
-Possibility to overwrite the save/load functions.
 
 Required :
  - SFML 2.1
  - Boost (system, filesystem, bind, functors)
 
 ## What it's look like :
+
+(Click on the screenshot to see the video !)
+
 
 [![Flow Demo](http://img.youtube.com/vi/-0VJ6-2Nrpw/0.jpg)](http://www.youtube.com/watch?v=-0VJ6-2Nrpw)
 
