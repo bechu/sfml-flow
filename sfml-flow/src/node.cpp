@@ -60,7 +60,7 @@ Node::Node(
     size_y = 20 * size_y + 30;
     size_ = sf::Vector2f(label_max_size, size_y);
 
-    sf::RoundedRectangleShape*bg = new sf::RoundedRectangleShape(size_, M_PI*4, 100);
+    sf::RoundedRectangleShape* bg = new sf::RoundedRectangleShape(size_, float(M_PI*4.0f), 100u);
     bg->setFillColor(sf::Color(37, 37, 37));
     bg->setOutlineThickness(2);
     bg->setOutlineColor(sf::Color(68, 68, 68));
