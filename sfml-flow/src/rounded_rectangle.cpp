@@ -64,20 +64,20 @@ void RoundedRectangleShape::setCornerPointCount(unsigned int count)
 }
 
 ////////////////////////////////////////////////////////////
-unsigned int RoundedRectangleShape::getPointCount() const
+std::size_t RoundedRectangleShape::getPointCount() const
 {
     return myCornerPointCount*4;
 }
 
 ////////////////////////////////////////////////////////////
-sf::Vector2f RoundedRectangleShape::getPoint(unsigned int index) const
+sf::Vector2f RoundedRectangleShape::getPoint(std::size_t index) const
 {
     if(index >= myCornerPointCount*4)
         return sf::Vector2f(0,0);
 
     float deltaAngle = 90.0f/(myCornerPointCount-1);
     sf::Vector2f center;
-    unsigned int centerIndex = index/myCornerPointCount;
+    std::size_t centerIndex = index/myCornerPointCount;
 
     switch(centerIndex)
     {

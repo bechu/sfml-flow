@@ -6,7 +6,7 @@ SFML-FLOW
 Flow editor, based on model definition in c++.
 
 Required :
- - SFML 2.1
+ - SFML 2.5.x
  - Boost (system, filesystem, bind, functors)
 
 ## What it's look like :
@@ -15,6 +15,17 @@ Required :
 
 
 [![Flow Demo](http://img.youtube.com/vi/-0VJ6-2Nrpw/0.jpg)](http://www.youtube.com/watch?v=-0VJ6-2Nrpw)
+
+## Build
+
+```
+git clone ...
+cd sfml-flow/sfml-flow/
+mkdir build
+cd build
+cmake ..
+make
+```
 
 ## Corresponding sample code
 
@@ -93,4 +104,3 @@ In this case just create a controller with this new class :
 ```c++
 Controller ctrl = Controller::make<XmlOutput>();
 ```
-

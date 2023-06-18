@@ -99,7 +99,7 @@ public:
     /// \return Number of points of the rounded rectangle
     ///
     ////////////////////////////////////////////////////////////
-    virtual unsigned int getPointCount() const;
+    virtual std::size_t getPointCount() const;
 
     ////////////////////////////////////////////////////////////
     /// \brief Get a point of the rounded rectangle
@@ -111,7 +111,7 @@ public:
     /// \return Index-th point of the shape
     ///
     ////////////////////////////////////////////////////////////
-    virtual sf::Vector2f getPoint(unsigned int index) const;
+    virtual sf::Vector2f getPoint(std::size_t index) const;
 
 private:
     ////////////////////////////////////////////////////////////
